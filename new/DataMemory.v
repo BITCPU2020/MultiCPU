@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 module DataMemory(
-		input wire clk, rstn
+		input wire clk, rstn,
 		input wire i_DMem_we,
 		input wire [31:0] i_DMem_addr,
 		input wire [31:0] i_DMem_wData,

@@ -10,9 +10,9 @@ module EXE(
 
 		output wire o_EXE_dmemWe, o_EXE_regWe, o_EXE_sWD,
 
-		output wire [4:0] o_EXE_WRA,
-		output wire [31:0] o_EXE_aluOut
-		output wire [31:0] o_EXE_rd2
+		output wire [4:0] o_EXE_WRA, o_EXE_sa
+		output wire [31:0] o_EXE_aluOut,
+		output wire [31:0] o_EXE_rd2,
 	);
 	
 	reg EXE_dmemWe, EXE_regWe, EXE_sA1, EXE_sA2, EXE_sB, EXE_sWD;

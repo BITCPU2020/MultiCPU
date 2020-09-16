@@ -1,48 +1,34 @@
 `timescale 1ns / 1ps
 
 module DEC(
-		input wire clk, rstn, i_DEC_regWe, i_DEC_swra, i_DEC_BRop, i_DEC_sign,
-		input wire [4:0] i_DEC_rt, i_DEC_rd,
-		input wire [??:0] i_DEC_BRop,
-		input wire [15:0] i_DEC_branchOffset, i_DEC_num,
-		input wire [25:0] i_DEC_jumpTarget,
-		input wire [31:0] i_DEC_ra1, i_DEC_ra2, i_DEC_WRA,
+		input wire clk, rstn, i_DEC_regWe,
+		input wire [4:0] i_DEC_WRA;
+		input wire [31:0] i_DEC_pc, i_DEC_inst,
 		input wire [31:0] i_DEC_aluOutE, i_DEC_dMemRDataM, i_DEC_rstW,
+		output wire o_DEC_regWe, o_DEC_dMemWe, o_DEC_swd,
+		output wire [3:0] o_DEC_ALUop,
 		output wire [4:0] o_DEC_WRA,
 		output wire [31:0] o_DEC_pc, o_DEC_num, o_DEC_WRA, o_DEC_rd1, o_DEC_rd2
     );
     
-	reg [??:0] DEC_BRop;
-	reg [15:0] DEC_branchOffset, DEC_num;
-	reg [25:0] DEC_jumpTarget;
-	reg DEC_regWe, DEC_sign, DEC_swra;
-	reg [31:0] DEC_ra1, DEC_ra2, DEC_WRA, DEC_aluOutE, DEC_dMemRDataM, DEC_rstW;
+	reg DEC_regWe;
+	reg DEC_WRA;
+	reg [31:0] DEC_pc, DEC_inst, DEC_aluOutE, DEC_dMemRDataM, DEC_rstW;
 
-	always @(posedge clk or negedge rst) begin
+	always @(posedge clk or negedge rstn) begin
 		if (!rstn) begin
-			DEC_BRop <= 0;
-			DEC_branchOffset <= 0;
-			DEC_num <= 0;
-			DEC_jumpTarget <= 0;
 			DEC_regWe <= 0;
-			DEC_sign <= 0;
-			DEC_ra1 <= 0;
-			DEC_ra2 <= 0;
 			DEC_WRA <= 0;
+			DEC_pc <= 0;
+			DEC_inst <= 0;
 			DEC_aluOutE <= 0;
 			DEC_dMemRDataM <= 0;
 			DEC_rstW <= 0;
 		end else begin
-			DEC_BRop <= i_DEC_BRop;
-			DEC_branchOffset <= i_DEC_branchOffset;
-			DEC_num <= i_DEC_num;
-			DEC_jumpTarget <= i_DEC_jumpTarget;
 			DEC_regWe <= i_DEC_regWe;
-			DEC_sign <= i_DEC_sign;
-			DEC_ra1 <= i_DEC_ra1;
-			DEC_ra2 <= i_DEC_ra2;
 			DEC_WRA <= i_DEC_WRA;
-			DEC_rstW <= i_DEC_rstW;
+			DEC_pc <= i_DEC_pc;
+			DEC_inst <= i_DEC_inst;
 			DEC_aluOutE <= i_DEC_aluOutE;
 			DEC_dMemRDataM <= i_DEC_dMemRDataM;
 			DEC_rstW <= i_DEC_rstW;
@@ -51,6 +37,39 @@ module DEC(
 
 	wire [31:0] RegistorFile_rd1, RegistorFile_rd2;
 	wire PauseUnit_pause;
+	wire [5:0] DEC_opcodeF, DEC_functF;
+	wire ControlUnit_sA1, ControlUnit_sA2, ControlUnit_sB, ControlUnit_swa;
+	wire [4:0] DEC_ra1, DEC_ra2;
+	wire [15:0] DEC_num, DEC_branchOffset;
+	wire [25:0] DEC_jumpTarget;
+	wire [3:0] DEC_BRop;
+
+	assign DEC_opcode = DEC_inst[31:26];
+	assign DEC_ra1 = DEC_inst[25:21];
+	assign DEC_ra2 = DEC_inst[20:16];
+	assign DEC_rt = DEC_inst[20:16];
+	assign DEC_rd = DEC_inst[15:11];
+	assign o_DEC_sa = DEC_inst[10:6];
+	assign DEC_funct = DEC_inst[5:0];
+	assign DEC_num = DEC_inst[15:0];
+	assign DEC_offset = DEC_inst[15:0];
+	assign DEC_target = DEC_inst[25:0];
+
+	ControlUnit ctrl(
+		.i_ControlUnit_opcode		(DEC_opcode),
+		.i_ControlUnit_funct		(DEC_funct),
+		.o_ContrlUnit_sA1			(ControlUnit_sA1),
+		.o_ContrlUnit_sA2			(ControlUnit_sA2),
+		.o_ContrlUnit_sB			(ControlUnit_sB),
+		.o_ContrlUnit_swa			(o_DEC_swa),
+		.o_ContrlUnit_swd			(o_DEC_swd),
+		.o_ContrlUnit_isLoad		(ControlUnit_isLoad),
+		.o_ContrlUnit_sign			(ControlUnit_sign),
+		.o_ContrlUnit_sALU			(o_DEC_ALUop),
+		.o_ContrlUnit_BRop			(ControlUnit_BRop),
+		.o_ContrlUnit_dMemWe		(ControlUnit_dMemWe),
+		.o_ContrlUnit_regWe			(ControlUnit_regWe)
+		);
     RegistorFile registor_file(
     	.clk						(clk),
     	.rstn						(rstn),
@@ -63,7 +82,7 @@ module DEC(
     	.o_RegistorFile_rd2			(RegistorFile_rd2));
     NumExtend num_extend(
     	.i_NumExtend_num			(DEC_num),
-    	.i_NumExtend_sign			(DEC_sign),
+    	.i_NumExtend_sign			(ControlUnit_sign),
     	.o_NumExtend_num			(o_DEC_num));
     BranchUnit branch_unit(
     	.i_BranchUnit_BRop			(DEC_BRop),
@@ -89,7 +108,7 @@ module DEC(
     mux #5 muxWA(
     	.in0						(DEC_rt),
     	.in1						(DEC_rd),
-    	.select						(DEC_swrsa),
+    	.select						(DEC_swa),
     	.out						(o_DEC_WRA));
     
 endmodule

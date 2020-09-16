@@ -3,7 +3,7 @@
 module MEM(
 		input wire clk, rstn, i_MEM_regWe, i_MEM_dMemWe, i_MEM_sWD,
 		input wire [4:0] i_MEM_WRA,
-		input wire [31:0] i_MEM_aluOut i_MEM_rd2,
+		input wire [31:0] i_MEM_aluOut, i_MEM_rd2,
 		
 		output wire o_MEM_regWe, o_MEM_sWD,
 		output wire [4:0] o_MEM_WRA,
@@ -39,7 +39,7 @@ module MEM(
     
     DataMemory data_memory(
     	.clk					(clk),
-    	.rstn					(rstn)
+    	.rstn					(rstn),
 		.i_DMem_we				(MEM_dMemWe),
 		.i_DMem_addr			(MEM_aluOut),
 		.i_DMem_wData			(MEM_rd2),

@@ -4,16 +4,20 @@ module MultiCPU(
 		input wire clk, rstn
     );
 	
-	wire sA1D, sA2D, sBD, swaD, swdD, isLoadD, dMemWeD, regWeD;
-	wire [5:0] opcodeD, functD;
-	wire [4:0] rsD, rtD, rdD, saD;
-	wire [15:0] offsetD, numD;
-	wire [16:0] targetD;
+	wire [5:0] opcodeF, functF;
+	wire [4:0] rsF, rtF, rdF, saF;
+	wire [15:0] offsetF, numF;
+	wire [16:0] targetF;
+	wire [31:0] instF;
+	
+	wire sA1D, sA2D, sBD, swaD, swdD, isLoadD, signD, dMemWeD, regWeD;
 	wire [3:0] sALUD;
-	wire [??:0] BRopD;
+	wire [3:0] BRopD;
 
-	wire [31:0] aluOutE,
-
+	wire [31:0] aluOutE;
+    
+//    wire
+    
 	assign opcodeF = instF[31:26];
 	assign ra1F = instF[25:21];
 	assign ra2F = instF[20:16];
@@ -26,50 +30,30 @@ module MultiCPU(
 	assign offsetF = instF[15:0];
 	assign targetF = instF[25:0];
 
-
-	ControlUnit ctrl(
-		.i_ControlUnit_opcode	(opcodeF),
-		.i_ControlUnit_funct	(functF),
-		.o_ContrlUnit_sA1		(sA1D),
-		.o_ContrlUnit_sA2		(sA2D),
-		.o_ContrlUnit_sB		(sBD),
-		.o_ContrlUnit_swa		(swaD),
-		.o_ContrlUnit_swd		(swdD),
-		.o_ContrlUnit_isLoad	(isLoadD),
-		.o_ContrlUnit_sign		(signD),
-		.o_ContrlUnit_sALU		(sALUD),
-		.o_ContrlUnit_BRop		(BRopD),
-		.o_ContrlUnit_dMemWe	(dMemWeD),
-		.o_ContrlUnit_regWe		(regWeD)
-		);
-    FTC ftc(
+	FTC ftc(
     	.clk					(clk),
     	.rstn					(rstn),
 		.i_FTC_pc				(pcD),
-		.o_FTC_inst				(instF));
+		.o_FTC_inst				(instF)
+		.o_FTC_pc				(pcF));
     DEC dec(
     	.clk					(clk),
 		.rstn					(rstn),
 		.i_DEC_regWe			(regWeW),
-		.i_DEC_swra				(),
-		.i_DEC_BRop				(BRopD),
-		.i_DEC_sign,			(signD),
-		.i_DEC_rt				(rtF),
-		.i_DEC_rd,				(rdF),
-		.i_DEC_BRop,			(BRopD),
-		.i_DEC_branchOffset		(offsetF),
-		.i_DEC_num,				(numF),
-		.i_DEC_jumpTarget,		(targetF),
-		.i_DEC_ra1				(ra1F),
-		.i_DEC_ra2				(ra2F),
-		.i_DEC_wRA				(WRAW),
-		.i_DEC_writeData,		(rstW),
+		.i_DEC_WRA				(WRAW),
+		.i_DEC_pc				(pcF),
+		.i_DEC_inst				(instF),
 		.i_DEC_aluOutE			(aluOutE),
 		.i_DEC_dMemRDataM		(dMemRDataM),
-		.i_DEC_rstW,			(rstW),
+		.i_DEC_rstW				(rstW),
+		.o_DEC_regWe			(regWeD),
+		.o_DEC_dMemWe			(dMemWeD),
+		.o_DEC_swd				(swdD),
+		.o_DEC_ALUop			(sALUD),
+		.o_DEC_WRA				(WRAD),
+		.o_DEC_sa				(saD)
 		.o_DEC_pc				(pcD),
 		.o_DEC_num				(eNumD),
-		.o_DEC_WRA				(WRAD),
 		.o_DEC_rd1				(rd1D),
 		.o_DEC_rd2				(rd2D));
     EXE exe(
