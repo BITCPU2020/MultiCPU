@@ -1,12 +1,12 @@
 `timescale 1ns / 1ps
 
 module EXE(
-		input wire i_EXE_clk, i_EXE_rstn,
-		input wire [4:0] i_EXE_WRA
+		input wire clk, rstn,
+		input wire [4:0] i_EXE_WRA,
 		input wire i_EXE_dmemWe, i_EXE_regWe, i_EXE_sA1, i_EXE_sA2, i_EXE_sB, i_EXE_sWD,
 
 		input wire [5:0] i_EXE_ALUop,
-		input wire [31:0] i_EXE_rd1, i_EXE_rd2, i_EXE_num, i_EXE_shrmt;
+		input wire [31:0] i_EXE_rd1, i_EXE_rd2, i_EXE_num, i_EXE_shrmt,
 
 		output wire o_EXE_dmemWe, o_EXE_regWe, o_EXE_sWD,
 
@@ -19,8 +19,8 @@ module EXE(
 	reg [5:0] EXE_ALUop;
 	reg [31:0] EXE_rd1, EXE_rd2, EXE_num, EXE_shrmt;
 
-	always @(posedge i_EXE_clk or negedge i_EXE_rstn) begin
-		if (!i_EXE_rstn) begin
+	always @(posedge clk or negedge rstn) begin
+		if (!rstn) begin
 			EXE_dmemWe <= 0;
 			EXE_regWe <= 0;
 			EXE_sA1 <= 0;

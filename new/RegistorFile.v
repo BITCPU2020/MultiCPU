@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 module RegistorFile(
-		input wire i_RegistorFile_clk, i_RegistorFile_rstn, i_RegistorFile_we,
+		input wire clk, rstn, i_RegistorFile_we,
 		input wire [4:0] i_RegistorFile_ra1, i_RegistorFile_ra2,
 		input wire [4:0] i_RegistorFile_writeAddr,
 		input wire [31:0] i_RegistorFile_writeData,
@@ -16,8 +16,8 @@ module RegistorFile(
 
 	// write
 	integer i;
-	always @(posedge i_RegistorFile_clk) begin
-		if(!i_RegistorFile_rstn)
+	always @(posedge clk) begin
+		if(!rstn)
 			for(i = 0; i < 32; i = i + 1)
 				registorFile[i] <= 32'b0;
 		if(i_RegistorFile_we) begin
