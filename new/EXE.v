@@ -57,8 +57,24 @@ module EXE(
 
 	wire [31:0] EXE_tempA, EXE_A, EXE_B;
 
-	mux #32 muxA1(EXE_shrmt, EXE_num, EXE_sA1, EXE_tempA);
-	mux #32 muxA2(EXE_tempA, EXE_rd1, EXE_sA2, EXE_A);
-	mux #32 muxB(EXE_num, EXE_rd2, EXE_sB, EXE_B);
-	ALU alu(EXE_A, EXE_B, EXE_ALUop, o_EXE_ALUout);
+	mux #32 muxA1(
+		.in0			(EXE_shrmt),
+		.in1			(EXE_num),
+		.select			(EXE_sA1),
+		.out 			(EXE_tempA));
+	mux #32 muxA2(
+		.in0			(EXE_tempA),
+		.in1			(EXE_rd1),
+		.select			(EXE_sA2),
+		.out			(EXE_A));
+	mux #32 muxB(
+		.in0			(EXE_num),
+		.in1			(EXE_rd2),
+		.select			(EXE_sB),
+		.out			(EXE_B));
+	ALU alu(
+		.i_ALU_srcA		(EXE_A),
+		.i_ALU_srcB		(EXE_B),
+		.i_ALU_op		(EXE_ALUop),
+		.o_ALU_aluOut	(o_EXE_ALUout));
 endmodule

@@ -11,7 +11,7 @@ module PauseUnit(
 
 		// a factor that lead to pause, (another is lw)
 		output wire o_PauseUnit_pause,
-		input wire [31:0] o_PauseUnit_rd1, o_PauseUnit_rd2,
+		input wire [31:0] o_PauseUnit_rd1, o_PauseUnit_rd2
 	);
 
 	reg [4: 0] buff1, buff2, buff3;
