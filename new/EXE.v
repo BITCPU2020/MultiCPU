@@ -19,6 +19,11 @@ module EXE(
 	reg [5:0] EXE_ALUop;
 	reg [31:0] EXE_rd1, EXE_rd2, EXE_num, EXE_shrmt;
 
+	assign o_EXE_dmemWe = EXE_dmemWe;
+	assign o_EXE_regWe = EXE_regWe;
+	assign o_EXE_sWD = EXE_sWD;
+	assign o_EXE_WRA = EXE_WRA;
+
 	always @(posedge clk or negedge rstn) begin
 		if (!rstn) begin
 			EXE_dmemWe <= 0;
@@ -49,11 +54,6 @@ module EXE(
 			EXE_shrmt <= i_EXE_shrmt;
 		end
 	end
-
-	assign o_EXE_dmemWe = EXE_dmemWe;
-	assign o_EXE_regWe = EXE_regWe;
-	assign o_EXE_sWD = EXE_sWD;
-	assign o_EXE_WRA = EXE_WRA;
 
 	wire [31:0] EXE_tempA, EXE_A, EXE_B;
 

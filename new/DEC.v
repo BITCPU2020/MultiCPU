@@ -7,7 +7,7 @@ module DEC(
 		input wire [15:0] i_DEC_branchOffset, i_DEC_num,
 		input wire [25:0] i_DEC_jumpTarget,
 		input wire [31:0] i_DEC_ra1, i_DEC_ra2, i_DEC_writeAddr, i_DEC_writeData,
-		input wire [31:0] i_DEC_aluOutE, i_DEC_dMemRDataM, i_DEC_W,
+		input wire [31:0] i_DEC_aluOutE, i_DEC_dMemRDataM, i_DEC_rstW,
 		
 		output wire o_PauseUnit_pause,
 		output wire [31:0] o_DEC_pc, o_DEC_num, o_DEC_WRA, o_DEC_rd1, o_DEC_rd2
@@ -17,7 +17,7 @@ module DEC(
 	reg [15:0] DEC_branchOffset, DEC_num;
 	reg [25:0] DEC_jumpTarget;
 	reg DEC_we, DEC_sign, DEC_swra;
-	reg [31:0] DEC_ra1, DEC_ra2, DEC_writeAddr, DEC_writeData, DEC_aluOutE, DEC_dMemRDataM, DEC_W;
+	reg [31:0] DEC_ra1, DEC_ra2, DEC_writeAddr, DEC_writeData, DEC_aluOutE, DEC_dMemRDataM, DEC_rstW;
 
 	always @(posedge clk or negedge rst) begin
 		if (!rstn) begin
@@ -33,7 +33,7 @@ module DEC(
 			DEC_writeData <= 0;
 			DEC_aluOutE <= 0;
 			DEC_dMemRDataM <= 0;
-			DEC_W <= 0;
+			DEC_rstW <= 0;
 		end else begin
 			DEC_BRop <= i_DEC_BRop;
 			DEC_branchOffset <= i_DEC_branchOffset;
@@ -47,7 +47,7 @@ module DEC(
 			DEC_writeData <= i_DEC_writeData;
 			DEC_aluOutE <= i_DEC_aluOutE;
 			DEC_dMemRDataM <= i_DEC_dMemRDataM;
-			DEC_W <= i_DEC_W;
+			DEC_rstW <= i_DEC_rstW;
 		end
 	end
 
@@ -78,7 +78,7 @@ module DEC(
     	.rstn						(rstn),
 		.i_PauseUnit_aluOutE		(DEC_aluOutE),
 		.i_PauseUnit_dMemRDataM		(DEC_dMemRDataM),
-		.i_PauseUnit_W 				(DEC_W),
+		.i_PauseUnit_W 				(DEC_rstW),
 		.i_PauseUnit_ra1			(DEC_ra1),
 		.i_PauseUnit_ra2			(DEC_ra2),
 		.i_PauseUnit_rd1			(RegistorFile_rd1),
@@ -89,7 +89,7 @@ module DEC(
     mux #5 muxWA(
     	.in0						(DEC_rt),
     	.in1						(DEC_rd),
-    	.select						(DEC_swra),
+    	.select						(DEC_swrsa),
     	.out						(o_DEC_WRA));
     
 endmodule
