@@ -1,10 +1,16 @@
 # MultiCPU
 TODO：
 
-+ CPU
++ CPU					(Hard)
++ BranchUnit	   (Hard)
++ ALU					(Hard)
++ WRT
++ ControlUnit
++ FTC                    (Easy)
++ MEM
++ MultiCPU
 
-+ BranchUnit
-+ ALU
+
 
 ATTENTION：
 
