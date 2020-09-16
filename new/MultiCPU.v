@@ -3,7 +3,7 @@
 module MultiCPU(
 
     );
-    F f();
+    FTC ftc();
     DEC dec();
     EXE exe();
     MEM mem();

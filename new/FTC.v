@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module F(
+module FTC(
 
     );
     InstructionMemory instruction_memory();
