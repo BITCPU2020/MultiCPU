@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 module WRT(
-		input wire clk, rstn, i_WRT_regWe, i_WRT_dMemWe,
+		input wire clk, rstn, i_WRT_regWe, i_WRT_sWD,
 		input wire [4:0] i_WRT_WRA,
 		input wire [31:0] i_WRT_aluOut, i_WRT_dMemData,
 		output wire o_WRT_regWe,

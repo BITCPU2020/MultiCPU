@@ -3,8 +3,8 @@
 module RegistorFile(
 		input wire clk, rstn, i_RegistorFile_we,
 		input wire [4:0] i_RegistorFile_ra1, i_RegistorFile_ra2,
-		input wire [4:0] i_RegistorFile_writeAddr,
-		input wire [31:0] i_RegistorFile_writeData,
+		input wire [4:0] i_RegistorFile_WRA,
+		input wire [31:0] i_RegistorFile_rstW,
 		output wire [31:0] o_RegistorFile_rd1, o_RegistorFile_rd2
 	);
 
@@ -21,7 +21,7 @@ module RegistorFile(
 			for(i = 0; i < 32; i = i + 1)
 				registorFile[i] <= 32'b0;
 		if(i_RegistorFile_we) begin
-			registorFile[i_RegistorFile_writeAddr] <= i_RegistorFile_writeData;
+			registorFile[i_RegistorFile_WRA] <= i_RegistorFile_rstW;
 		end
 	end
 

@@ -7,6 +7,7 @@ module BranchUnit (
 		input wire [31:0] i_BranchUnit_A, i_BranchUnit_B,
 		input wire [15:0] i_BranchUnit_branchOffset,
 		input wire [15:0] i_BranchUnit_jumpTarget,
+		input wire [31:0] i_BranchUnit_pause,
 
 		output wire [31:0] o_BranchUnit_pc
 	);
