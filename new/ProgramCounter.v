@@ -7,7 +7,9 @@ module ProgramCounter(
 	);
 	
 	reg [31:0] pc_reg;
+
 	assign o_ProgramCounter_pc = pc_reg;
+	
 	always @(posedge clk) begin
 		if (!rstn) begin
 			pc_reg <= 32'b0;

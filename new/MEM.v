@@ -2,7 +2,7 @@
 
 module MEM(
 
-    );
+    ); 
     
     DataMemory data_memory();
     
