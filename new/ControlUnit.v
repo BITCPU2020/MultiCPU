@@ -9,6 +9,14 @@ module ControlUnit(
 		output wire o_ContrlUnit_dMemWe, o_ContrlUnit_regWe
 	);
 	
-	// todo
+	wire [5:0] i_type;
+	assign i_type = (opcode==6'b001000) ? 16: // addi
+                    (opcode==6'b001001) ? 17: // addiu
+                    (opcode==6'b100011) ? 18: // andi
+                    (opcode==6'b101011) ? 19: // ori
+                    (opcode==6'b000100) ? 20: // xori
+                    (opcode==6'b000010) ? 21: // lui
+                    (opcode==6'b000101) ? 22: // lw
+                    ((opcode==6'b000000) && (funct==6'b100000)) ? 7 : 8;
 
 endmodule
