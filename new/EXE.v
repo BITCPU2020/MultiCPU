@@ -13,8 +13,8 @@ module EXE(
 	);
 	
 	reg EXE_dmemWe, EXE_regWe, EXE_sA, EXE_sB, EXE_sByte, EXE_sWRD, EXE_srs;
-	reg [4:0] EXE_brOP;
-	reg [5:0] EXE_aluOP, EXE_WRA;
+	reg [3:0] EXE_brOP;
+	reg [4:0] EXE_aluOP, EXE_WRA;
 	reg [25:0] EXE_target;
 	reg [31:0] EXE_rd1, EXE_rd2, EXE_num, EXE_PC;
 
