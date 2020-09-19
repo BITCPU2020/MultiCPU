@@ -57,11 +57,11 @@ module DEC(
 		.funct						(DEC_funct),
 		.rs							(DEC_rs),
 		.rt							(DEC_rt),
-		.o_ContrlUnit_srs			(o_DEC_srs),
 		.o_ContrlUnit_sImme			(ControlUnit_sImme),
+		.o_ContrlUnit_sA0			(o_DEC_sA0),
 		.o_ContrlUnit_sA			(o_DEC_sA),
 		.o_ContrlUnit_sB			(o_DEC_sB),
-		.o_ContrlUnit_srtrd			(ControlUnit_srtrd),
+		.o_ContrlUnit_sWRA0			(ControlUnit_sWRA0),
 		.o_ContrlUnit_sWRA			(ControlUnit_sWRA),
 		.o_ContrlUnit_sWRD			(o_DEC_sWRD),
 		.o_ContrlUnit_sLoad			(ControlUnit_isLoad),
@@ -104,12 +104,12 @@ module DEC(
 		.o_PauseUnit_pause			(o_DEC_pause),
 		.o_PauseUnit_rd1			(o_DEC_rd1),
 		.o_PauseUnit_rd2			(o_DEC_rd2));
-    mux #5 muxWA0(
+    mux #5 muxWRA0(
     	.in0						(DEC_rt),
     	.in1						(DEC_rd),
     	.select						(ControlUnit_srtrd),
     	.out						(muxWA0_WRA0));
-    mux #5 muxWA(
+    mux #5 muxWRA(
     	.in0						(muxWA0_WRA0),
     	.in1						(5'b11111),
     	.select						(ControlUnit_sWRA),
