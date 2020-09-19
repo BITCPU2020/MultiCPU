@@ -7,7 +7,7 @@ module InstructionMemory(
 	
 	reg [7:0] imem[255:0];
 	initial begin
-	   $readmemh("D:/inst.txt", imem);
+		$readmemh("D:/inst.txt", imem);
 	end
 
 	wire [7:0] addr = i_iMem_addr[7:0];

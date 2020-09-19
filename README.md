@@ -7,17 +7,17 @@ DONE：
 - MEM
 - WRI
 - mux
+- MultiCPU
 - DataMemory
 - NumExtend
+- InstructionMemory
+- ControlUnit
 
 
 
 TODO：
 
-- MultiCPU
 - PC
-- InstructionMemory
-- ControlUnit
 - RegistorFile
 - PauseUnit
 - ALU
