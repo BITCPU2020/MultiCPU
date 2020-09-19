@@ -56,8 +56,10 @@ module DEC(
 	assign DEC_target = DEC_inst[25:0];
 
 	ControlUnit ctrl(
-		.i_ControlUnit_opcode		(DEC_opcode),
-		.i_ControlUnit_funct		(DEC_funct),
+		.opcode						(DEC_opcode),
+		.funct						(DEC_funct),
+		.rs							(DEC_rs),
+		.rt							(DEC_rt),
 		.o_ContrlUnit_srs			(o_DEC_srs),
 		.o_ContrlUnit_sImme			(ControlUnit_sImme),
 		.o_ContrlUnit_sA			(o_DEC_sA),
