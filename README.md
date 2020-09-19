@@ -12,14 +12,14 @@ DONE：
 - NumExtend
 - InstructionMemory
 - ControlUnit
+- RegistorFile
+- ALU
 
 
 
 TODO：
 
 - PC
-- RegistorFile
 - PauseUnit
-- ALU
 - BranchUnit
 
