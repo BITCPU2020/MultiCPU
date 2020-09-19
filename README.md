@@ -1,17 +1,30 @@
 # MultiCPU
+DONE：
+
+- FTC
+- DEC
+- EXE
+- MEM
+
++ FTC
++ DEC
++ EXE
++ MEM
++ WRI
++ mux
++ DataMemory
+
+
+
 TODO：
 
-+ BranchUnit (Hard)
-+ ALU (Hard)
-+ WRT
-+ ControlUnit
-+ FTC (Easy)
-+ MEM
-+ MultiCPU
-
-
-
-ATTENTION：
-
-+ 目的寄存器地址是$zero时需要报错[PauseUnit.v  line21  col12]
+- MultiCPU
+- PC
+- InstructionMemory
+- ControlUnit
+- NumExtend
+- RegistorFile
+- PauseUnit
+- ALU
+- BranchUnit
 
