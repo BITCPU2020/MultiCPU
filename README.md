@@ -5,14 +5,9 @@ DONE：
 - DEC
 - EXE
 - MEM
-
-+ FTC
-+ DEC
-+ EXE
-+ MEM
-+ WRI
-+ mux
-+ DataMemory
+- WRI
+- mux
+- DataMemory
 
 
 
