@@ -8,6 +8,7 @@ DONE：
 - WRI
 - mux
 - DataMemory
+- NumExtend
 
 
 
@@ -17,7 +18,6 @@ TODO：
 - PC
 - InstructionMemory
 - ControlUnit
-- NumExtend
 - RegistorFile
 - PauseUnit
 - ALU
