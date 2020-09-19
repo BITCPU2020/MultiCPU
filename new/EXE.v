@@ -1,10 +1,10 @@
 `timescale 1ns / 1ps
 
 module EXE(
-		input wire clk, rstn, i_EXE_dmemWe, i_EXE_regWe, i_EXE_sA, i_EXE_sB, i_EXE_sByte, i_EXE_sWRD, i_EXE_srs, i_EXE_clr,
+		input wire clk, rstn, i_EXE_dmemWe, i_EXE_regWe, i_EXE_sA, i_EXE_sB, i_EXE_sByte, i_EXE_sWRD, i_EXE_pause,
 		input wire [3:0] i_EXE_brOP,
 		input wire [4:0] i_EXE_aluOP, i_EXE_WRA,
-		input wire [25:0] i_EXE_target,
+		input wire [25:0] i_EXE_lowPC,
 		input wire [31:0] i_EXE_rd1, i_EXE_rd2, i_EXE_num, i_EXE_PC,
 
 		output wire o_EXE_dmemWe, o_EXE_regWe, o_EXE_sByte, o_EXE_sWRD, o_EXE_clr,
@@ -26,36 +26,34 @@ module EXE(
 	assign o_EXE_rd2 = EXE_rd2;
 
 	always @(posedge clk or negedge rstn) begin
-		if (!rstn or EXE_clr) begin
+		if (!rstn) begin
 			EXE_dmemWe <= 0;
 			EXE_regWe <= 0;
 			EXE_sA <= 0;
 			EXE_sB <= 0;
 			EXE_sByte <= 0;
 			EXE_sWRD <= 0;
-			EXE_srs <= 0;
-			EXE_clr <= 0;
+			EXE_pause <= 0;
 			EXE_brOP <= 0;
 			EXE_aluOP <= 0;
 			EXE_WRA <= 0;
-			EXE_target <= 0;
+			EXE_lowPC <= 0;
 			EXE_rd1 <= 0;
 			EXE_rd2 <= 0;
 			EXE_num <= 0;
 			EXE_PC <= 0;
-		end else if (!EXE_clr) begin
+		end else if (!EXE_pause) begin
 			EXE_dmemWe <= i_EXE_dmemWe;
 			EXE_regWe <= i_EXE_regWe;
 			EXE_sA <= i_EXE_sA;
 			EXE_sB <= i_EXE_sB;
 			EXE_sByte <= i_EXE_sByte;
 			EXE_sWRD <= i_EXE_sWRD;
-			EXE_srs <= i_EXE_srs;
-			EXE_clr <= i_EXE_clr;
+			EXE_pause <= i_EXE_pause;
 			EXE_brOP <= i_EXE_brOP;
 			EXE_aluOP <= i_EXE_aluOP;
 			EXE_WRA <= i_EXE_WRA;
-			EXE_target <= i_EXE_target;
+			EXE_lowPC <= i_EXE_lowPC;
 			EXE_rd1 <= i_EXE_rd1;
 			EXE_rd2 <= i_EXE_rd2;
 			EXE_num <= i_EXE_num;
@@ -89,7 +87,7 @@ module EXE(
 		.i_BranchUnit_A 			(EXE_rd1),
 		.i_BranchUnit_B 			(EXE_rd2),
 		.i_BranchUnit_brOP			(EXE_brOP),
-		.i_BranchUnit_target		(EXE_target),
+		.i_BranchUnit_target		(EXE_lowPC),
 		.i_BranchUnit_PC			(EXE_PC),
 		.o_BranchUnit_PC			(o_EXE_PC),
 		.o_BranchUnit_clr			(o_EXE_clr));
