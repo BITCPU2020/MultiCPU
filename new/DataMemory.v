@@ -2,7 +2,7 @@
 
 module DataMemory(
 		input wire clk, rstn,
-		input wire i_DMem_we, i_DMem_sByte,
+		input wire i_DMem_dMemWe, i_DMem_sByte,
 		input wire [31:0] i_DMem_addr,
 		input wire [31:0] i_DMem_wData,
 		output wire [31:0] o_DMem_rData
@@ -19,7 +19,7 @@ module DataMemory(
 	always @(posedge clk or negedge rstn) begin
 		if (!rstn) begin
 			$readmemh("D:/data.txt", dmem);
-		end else if(i_DMem_we) begin
+		end else if(i_DMem_dMemWe) begin
 			if(i_DMem_sByte==1) begin
 				dmem[addr] <= i_DMem_wData[7:0];
 				dmem[addr+1] <= dmem[addr+1];

@@ -3,22 +3,37 @@
 module MultiCPU(
 		input wire clk, rstn
 	);
-
+    
+    wire pauseD, clrE;
 	wire [31:0] PCF, instF;
+	
+	wire dMemWeD, regWeD, sWRDD, sA0D, sAD, sBD, sByteD;
+	wire [3:0] brOPD;
+	wire [4:0] aluOPD, WRAD;
+	wire [25:0] lowPCD;
+	wire [31:0] numD, rd1D, rd2D;
+	
+	wire [31:0] rd2E, aluOutE, PCE;
+	wire dMemWeE, regWeE, sByteE, sWRDE;
+	wire [4:0] WRAE;
+	
+	wire regWeM;
+	wire [4:0] WRAM;
+	wire [31:0] WRDM;
+	
+	wire regWeW;
+	wire [4:0] WRAW;
+	wire [31:0] rstW;
+	
 	FTC ftc(
 		.clk					(clk),
 		.rstn					(rstn),
 		.i_FTC_pause			(pauseD),
 		.i_FTC_we				(clrE),
-		.i_FTC_pc				(PCE),
+		.i_FTC_PC				(PCE),
 		.o_FTC_inst				(instF),
-		.o_FTC_pc				(PCF));
-
-	wire dMemWeD, regWeD, sWRDD, pauseD, sA0D, sAD, sBD, sByteD;
-	wire [3:0] brOPD;
-	wire [4:0] aluOPD, WRAD;
-	wire [15:0] lowPCD;
-	wire [31:0] numD, rd1D, rd2D;
+		.o_FTC_PC				(PCF));
+	
 	DEC dec(
 		.clk					(clk),
 		.rstn					(rstn),
@@ -45,9 +60,7 @@ module MultiCPU(
 		.o_DEC_num				(numD),
 		.o_DEC_rd1				(rd1D),
 		.o_DEC_rd2				(rd2D));
-	wire dMemWeE, regWeE, sByteE, sWRDE, clrE;
-	wire [4:0] WRAE;
-	wire [31:0] rd2E, aluOutE, PCE;
+
 	EXE exe(
 		.clk					(clk),
 		.rstn					(rstn),
@@ -57,6 +70,7 @@ module MultiCPU(
 		.i_EXE_sB				(sBD),
 		.i_EXE_sByte			(sByteD),
 		.i_EXE_sWRD				(sWRDD),
+		.i_EXE_srs				(sA0D),
 		.i_EXE_pause			(pauseD),
 		.i_EXE_brOP				(brOPD),
 		.i_EXE_aluOP			(aluOPD),
@@ -74,9 +88,7 @@ module MultiCPU(
 		.o_EXE_rd2				(rd2E),
 		.o_EXE_aluOut			(aluOutE),
 		.o_EXE_PC				(PCE));
-	wire regWeM;
-	wire [4:0] WRAM;
-	wire [31:0] WRDM;
+	
 	MEM mem(
 		.clk					(clk),
 		.rstn					(rstn),
@@ -90,9 +102,7 @@ module MultiCPU(
 		.o_MEM_regWe			(regWeM),
 		.o_MEM_WRA				(WRAM),
 		.o_MEM_WRD				(WRDM));
-	wire regWeW;
-	wire [4:0] WRAW;
-	wire [31:0] rstW;
+
 	WRT wrt(
 		.clk					(clk),
 		.rstn					(rstn),

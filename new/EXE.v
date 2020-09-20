@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 module EXE(
-		input wire clk, rstn, i_EXE_dmemWe, i_EXE_regWe, i_EXE_sA, i_EXE_sB, i_EXE_sByte, i_EXE_sWRD, i_EXE_pause,
+		input wire clk, rstn, i_EXE_dmemWe, i_EXE_regWe, i_EXE_sA, i_EXE_sB, i_EXE_sByte, i_EXE_sWRD, i_EXE_srs, i_EXE_pause,
 		input wire [3:0] i_EXE_brOP,
 		input wire [4:0] i_EXE_aluOP, i_EXE_WRA,
 		input wire [25:0] i_EXE_lowPC,
@@ -29,6 +29,7 @@ module EXE(
 		if (!rstn) begin
 			EXE_dmemWe <= 0;
 			EXE_regWe <= 0;
+			EXE_srs <= 0;
 			EXE_sA <= 0;
 			EXE_sB <= 0;
 			EXE_sByte <= 0;
@@ -45,6 +46,7 @@ module EXE(
 		end else if (!EXE_pause) begin
 			EXE_dmemWe <= i_EXE_dmemWe;
 			EXE_regWe <= i_EXE_regWe;
+			EXE_srs <= i_EXE_srs;
 			EXE_sA <= i_EXE_sA;
 			EXE_sB <= i_EXE_sB;
 			EXE_sByte <= i_EXE_sByte;
@@ -81,7 +83,7 @@ module EXE(
 	ALU alu(
 		.i_ALU_srcA					(muxA_A),
 		.i_ALU_srcB					(muxB_B),
-		.i_ALU_op					(EXE_ALUop),
+		.i_ALU_op					(EXE_aluOP),
 		.o_ALU_aluOut				(o_EXE_aluOut));
 	BranchUnit branch_unit(
 		.i_BranchUnit_A 			(EXE_rd1),

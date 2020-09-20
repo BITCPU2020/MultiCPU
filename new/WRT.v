@@ -11,21 +11,21 @@ module WRT(
 	
 	reg WRT_regWe;
 	reg [4:0] WRT_WRA;
-	reg [31:0] WRT_SWD;
+	reg [31:0] WRT_rstW;
 
 	assign o_WRT_regWe = WRT_regWe;
 	assign o_WRT_WRA = WRT_WRA;
-	assign o_WRT_WRD = WRT_WRD;
+	assign o_WRT_rstW = WRT_rstW;
 
 	always @(posedge clk or negedge rstn) begin
 		if(!rstn) begin
 			WRT_regWe <= 0;
 			WRT_WRA <= 0;
-			WRT_WRD <= 0;
+			WRT_rstW <= 0;
 		end else begin
 			WRT_regWe <= i_WRT_regWe;
 			WRT_WRA <= i_WRT_WRA;
-			WRT_WRD <= i_WRT_WRD;
+			WRT_rstW <= i_WRT_WRD;
 		end
 	end
 	

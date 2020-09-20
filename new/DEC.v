@@ -38,16 +38,17 @@ module DEC(
 	wire PauseUnit_pause;
 	wire ControlUnit_sImme, ControlUnit_srtrd, ControlUnit_sWRA, ControlUnit_sign;
 
-	assign DEC_opcode = DEC_inst[31:26];
-	assign DEC_ra1 = DEC_inst[25:21];
-	assign DEC_ra2 = DEC_inst[20:16];
-	assign DEC_rt = DEC_inst[20:16];
-	assign DEC_rd = DEC_inst[15:11];
-	assign DEC_sa = DEC_inst[10:6];
-	assign DEC_funct = DEC_inst[5:0];
-	assign DEC_num = DEC_inst[15:0];
-	assign DEC_offset = DEC_inst[15:0];
-	assign DEC_target = DEC_inst[25:0];
+	wire [5:0] DEC_opcode = DEC_inst[31:26];
+	wire [31:0] DEC_ra1 = DEC_inst[25:21];
+	wire [31:0]DEC_ra2 = DEC_inst[20:16];
+	wire [4:0]DEC_rs = DEC_inst[25:21];
+	wire [4:0]DEC_rt = DEC_inst[20:16];
+	wire [4:0]DEC_rd = DEC_inst[15:11];
+	wire [4:0]DEC_sa = DEC_inst[10:6];
+	wire [5:0]DEC_funct = DEC_inst[5:0];
+	wire [15:0]DEC_num = DEC_inst[15:0];
+	wire [15:0]DEC_offset = DEC_inst[15:0];
+	wire [25:0]DEC_target = DEC_inst[25:0];
 
 	ControlUnit ctrl(
 		.opcode						(DEC_opcode),
@@ -100,19 +101,19 @@ module DEC(
 		.i_PauseUnit_rd2			(RegistorFile_rd2),
 		.i_PauseUnit_regWa			(o_DEC_WRA),
 		.i_PauseUnit_regWe			(o_DEC_regWe),
-		.i_PauseUnit_isLoad			(ControlUnit_isLoad),
+		.i_PauseUnit_isLoad			(ControlUnit_sLoad),
 		.o_PauseUnit_pause			(o_DEC_pause),
 		.o_PauseUnit_rd1			(o_DEC_rd1),
 		.o_PauseUnit_rd2			(o_DEC_rd2));
 	mux #5 muxWRA0(
 		.in0						(DEC_rt),
 		.in1						(DEC_rd),
-		.select						(ControlUnit_srtrd),
+		.select						(ControlUnit_sWRA0),
 		.out						(muxWA0_WRA0));
 	mux #5 muxWRA(
 		.in0						(muxWA0_WRA0),
 		.in1						(5'b11111),
 		.select						(ControlUnit_sWRA),
 		.out						(o_DEC_WRA));
-	
+
 endmodule
