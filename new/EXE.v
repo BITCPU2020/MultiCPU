@@ -12,7 +12,7 @@ module EXE(
 		output wire [31:0] o_EXE_rd2, o_EXE_aluOut, o_EXE_PC
 	);
 	
-	reg EXE_dmemWe, EXE_regWe, EXE_sA, EXE_sB, EXE_sByte, EXE_sWRD, EXE_srs;
+	reg EXE_dmemWe, EXE_regWe, EXE_sA, EXE_sB, EXE_sByte, EXE_sWRD, EXE_srs, EXE_pause;
 	reg [3:0] EXE_brOP;
 	reg [4:0] EXE_aluOP, EXE_WRA;
 	reg [25:0] EXE_lowPC;
@@ -20,7 +20,7 @@ module EXE(
 
 	assign o_EXE_dmemWe = EXE_dmemWe;
 	assign o_EXE_regWe = EXE_regWe;
-	assign o_EXE_sByte = EXE_sByte
+	assign o_EXE_sByte = EXE_sByte;
 	assign o_EXE_sWRD = EXE_sWRD;
 	assign o_EXE_WRA = EXE_WRA;
 	assign o_EXE_rd2 = EXE_rd2;
