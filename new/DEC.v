@@ -61,7 +61,7 @@ module DEC(
 		.o_ContrlUnit_sWRA0			(ControlUnit_sWRA0),
 		.o_ContrlUnit_sWRA			(ControlUnit_sWRA),
 		.o_ContrlUnit_sWRD			(o_DEC_sWRD),
-		.o_ContrlUnit_sLoad			(ControlUnit_isLoad),
+		.o_ContrlUnit_sLoad			(ControlUnit_sLoad),
 		.o_ContrlUnit_sByte			(o_DEC_sByte),
 		.o_ContrlUnit_sign			(ControlUnit_sign),
 		.o_ContrlUnit_aluOP			(o_DEC_aluOP),
