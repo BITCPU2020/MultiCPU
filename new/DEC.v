@@ -14,11 +14,10 @@ module DEC(
 	);
 	
 	reg DEC_clr, DEC_pause;
-	reg [25:0] DEC_lowPC;
 	reg [31:0] DEC_PC, DEC_inst;
 
 	assign o_DEC_PC = DEC_PC;
-	assign o_DEC_lowPC = DEC_lowPC;
+	assign o_DEC_lowPC = DEC_inst[25:0];
 	assign o_DEC_inst = DEC_inst;
 
 	always @(posedge clk or negedge rstn) begin
@@ -26,11 +25,9 @@ module DEC(
 			DEC_clr <= 0;
 			DEC_pause <= 0;
 			DEC_PC <= 0;
-			DEC_lowPC <= 0;
 			DEC_inst <= 0;
 		end else if (!DEC_clr) begin
 			DEC_PC <= i_DEC_PC;
-			DEC_lowPC <= i_DEC_lowPC;
 			DEC_inst <= i_DEC_inst;
 		end
 	end
@@ -96,11 +93,13 @@ module DEC(
 		.rstn						(rstn),
 		.i_PauseUnit_aluOutE		(i_DEC_aluOutE),
 		.i_PauseUnit_dMemRDataM		(i_DEC_dMemRDataM),
-		.i_PauseUnit_W 				(i_DEC_rstW),
+		.i_PauseUnit_rstW 			(i_DEC_rstW),
 		.i_PauseUnit_ra1			(DEC_ra1),
 		.i_PauseUnit_ra2			(DEC_ra2),
 		.i_PauseUnit_rd1			(RegistorFile_rd1),
 		.i_PauseUnit_rd2			(RegistorFile_rd2),
+		.i_PauseUnit_regWe			(o_DEC_regWe),
+		.i_PauseUnit_isLoad			(ControlUnit_isLoad),
 		.o_PauseUnit_pause			(o_DEC_pause),
 		.o_PauseUnit_rd1			(o_DEC_rd1),
 		.o_PauseUnit_rd2			(o_DEC_rd2));
