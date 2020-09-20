@@ -98,6 +98,7 @@ module DEC(
 		.i_PauseUnit_ra2			(DEC_ra2),
 		.i_PauseUnit_rd1			(RegistorFile_rd1),
 		.i_PauseUnit_rd2			(RegistorFile_rd2),
+		.i_PauseUnit_regWa			(o_DEC_WRA),
 		.i_PauseUnit_regWe			(o_DEC_regWe),
 		.i_PauseUnit_isLoad			(ControlUnit_isLoad),
 		.o_PauseUnit_pause			(o_DEC_pause),
