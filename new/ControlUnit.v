@@ -30,22 +30,22 @@ module ControlUnit(
 					(opcode==6'b000010) ? 34:							   // j
 					(opcode==6'b000011) ? 35:							   // jal
 					((opcode==6'b000000) && (funct==6'b100000)) ? 0 :	   // add
-					((opcode==6'b000000) && (funct==6'b100000)) ? 1 :	   // addu
-					((opcode==6'b000000) && (funct==6'b100000)) ? 2 :	   // sub
-					((opcode==6'b000000) && (funct==6'b100000)) ? 3 :	   // subu
-					((opcode==6'b000000) && (funct==6'b100000)) ? 4 :	   // and
-					((opcode==6'b000000) && (funct==6'b100000)) ? 5 :	   // or
-					((opcode==6'b000000) && (funct==6'b100000)) ? 6 :	   // xor
-					((opcode==6'b000000) && (funct==6'b100000)) ? 7 :	   // nor
-					((opcode==6'b000000) && (funct==6'b100000)) ? 8 :	   // slt
-					((opcode==6'b000000) && (funct==6'b100000)) ? 9 :	   // sltu
-					((opcode==6'b000000) && (funct==6'b100000)) ? 10 :	  // sll
-					((opcode==6'b000000) && (funct==6'b100000)) ? 11 :	  // srl
-					((opcode==6'b000000) && (funct==6'b100000)) ? 12 :	  // sra
-					((opcode==6'b000000) && (funct==6'b100000)) ? 13 :	  // sllv
-					((opcode==6'b000000) && (funct==6'b100000)) ? 14 :	  // srlv
-					((opcode==6'b000000) && (funct==6'b100000)) ? 15 :	  // srav
-					((opcode==6'b000000) && (funct==6'b100000)) ? 16 :	  // jr
+					((opcode==6'b000000) && (funct==6'b100001)) ? 1 :	   // addu
+					((opcode==6'b000000) && (funct==6'b100010)) ? 2 :	   // sub
+					((opcode==6'b000000) && (funct==6'b100011)) ? 3 :	   // subu
+					((opcode==6'b000000) && (funct==6'b100100)) ? 4 :	   // and
+					((opcode==6'b000000) && (funct==6'b100101)) ? 5 :	   // or
+					((opcode==6'b000000) && (funct==6'b100110)) ? 6 :	   // xor
+					((opcode==6'b000000) && (funct==6'b100111)) ? 7 :	   // nor
+					((opcode==6'b000000) && (funct==6'b101010)) ? 8 :	   // slt
+					((opcode==6'b000000) && (funct==6'b101011)) ? 9 :	   // sltu
+					((opcode==6'b000000) && (funct==6'b000000)) ? 10 :	  // sll
+					((opcode==6'b000000) && (funct==6'b000010)) ? 11 :	  // srl
+					((opcode==6'b000000) && (funct==6'b000011)) ? 12 :	  // sra
+					((opcode==6'b000000) && (funct==6'b000100)) ? 13 :	  // sllv
+					((opcode==6'b000000) && (funct==6'b000110)) ? 14 :	  // srlv
+					((opcode==6'b000000) && (funct==6'b000111)) ? 15 :	  // srav
+					((opcode==6'b000000) && (funct==6'b001000)) ? 16 :	  // jr
 					36;
 	//
 	assign o_ContrlUnit_brOP = (i_type==16) ? 1 :							// jrd
@@ -56,7 +56,7 @@ module ControlUnit(
 					((i_type==29)&&(rt==5'b00000)) ? 6 :					// bltz
 					((i_type==29)&&(rt==5'b00001)) ? 7 :					// bgez
 					((i_type==29)&&(rt==5'b10000)) ? 8 :					// bltzal
-					((i_type==30)&&(rs==5'b10000)&&(rt==5'b00000)) ? 9 :	// b
+					((i_type==30)&&(rs==5'b00000)&&(rt==5'b00000)) ? 9 :	// b
 					(i_type==30) ? 10 :										// beq
 					(i_type==31) ? 11 :										// bne
 					(i_type==32) ? 12 :										// blez
