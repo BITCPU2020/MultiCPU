@@ -80,7 +80,7 @@ always @(posedge clk or negedge rstn) begin
 	end
 	else if (status == STATUS_READY && I_vram_we == 1) begin
 		for (i = 0; i < 32; i = i + 1) begin
-			vram[I_row][I_col * 32 + i] <= I_data[i];
+			vram[I_row][I_col * 32 + i] <= I_data[31 - i];
 		end
 	end
 end
