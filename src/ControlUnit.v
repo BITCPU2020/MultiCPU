@@ -80,11 +80,11 @@ module ControlUnit(
 					((al==1)||(i_type==35)) ? 13 :							// xal
 					0;														// nop
 	// imme or sa
-	assign o_ContrlUnit_sImme = ((i_type>=10)&&(i_type<=15)) ? 1 : 0;
+	assign o_ContrlUnit_sImme = ((i_type>=10)&&(i_type<=12)) ? 1 : 0;
 	// rs or pc
 	assign o_ContrlUnit_sA0 = (al==1) ? 1 : 0;
 	// rs or imme
-	assign o_ContrlUnit_sA = ((i_type>=10)&&(i_type<=15)) ? 1 : 0;
+	assign o_ContrlUnit_sA = ((i_type>=10)&&(i_type<=12)) ? 1 : 0;
 	// rt or imme
 	assign o_ContrlUnit_sB = ((i_type>=17)&&(i_type<=28)) ? 1 : 0;
 	// rt or rd
