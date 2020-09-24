@@ -36,7 +36,7 @@ parameter STATUS_TRANS_READY = 2'b00;
 parameter STATUS_TRANS_TRANSFER = 2'b01;
 parameter STATUS_TRANS_FINISH = 2'b10;
 
-reg [127:0] vram[63:0];
+reg [127:0] vram[127:0];
 
 reg [1:0] status;
 
@@ -73,7 +73,7 @@ integer j;
 always @(posedge clk or negedge rstn) begin
 	if (!rstn) begin
 		// reset
-		for (i = 0; i < 64; i = i + 1) begin
+		for (i = 0; i < 128; i = i + 1) begin
 			for (j = 0; j < 128; j = j + 1) begin
 				vram[i][j] <= 0;
 			end
@@ -556,7 +556,7 @@ always @(posedge clk or negedge rstn) begin
 			// show current page
 			if (cnt == 128 * 4) begin
 				// finish current page
-				if (c_page == 4'd7) begin
+				if (c_page == 4'd15) begin
 					// finish all
 					cnt <= 0;
 					status <= STATUS_FINISH;
@@ -571,14 +571,13 @@ always @(posedge clk or negedge rstn) begin
 					we <= 1;
 					is_cmd <= 0;
 					data <= {vram[c_page * 8 + 0][cnt / 4], 
-						 vram[c_page * 8 + 1][cnt / 4], 
-						 vram[c_page * 8 + 2][cnt / 4],
-						 vram[c_page * 8 + 3][cnt / 4],
-						 vram[c_page * 8 + 4][cnt / 4],
-						 vram[c_page * 8 + 5][cnt / 4],
-						 vram[c_page * 8 + 6][cnt / 4],
-						 vram[c_page * 8 + 7][cnt / 4]};
-					
+							 vram[c_page * 8 + 1][cnt / 4], 
+							 vram[c_page * 8 + 2][cnt / 4],
+							 vram[c_page * 8 + 3][cnt / 4],
+							 vram[c_page * 8 + 4][cnt / 4],
+							 vram[c_page * 8 + 5][cnt / 4],
+							 vram[c_page * 8 + 6][cnt / 4],
+							 vram[c_page * 8 + 7][cnt / 4]};
 					cnt <= cnt + 1;
 				end
 			end
