@@ -1,41 +1,79 @@
 `timescale 1ns / 1ps
 
 module PauseUnit(
-		input wire clk, rstn,
-		// target reg
-		input wire [4:0] i_PauseUnit_WRA,
-		// back propagation at each step
-		input wire [31:0] i_PauseUnit_aluOutE, i_PauseUnit_dMemRDataM, i_PauseUnit_W,
-		// new data
-		input wire [31:0] i_PauseUnit_rd1, i_PauseUnit_rd2,
+	input clk,
+	input rstn,
+	input [31:0] i_PauseUnit_aluOutE,
+	input [31:0]i_PauseUnit_dMemRDataM,
+	input [31:0] i_PauseUnit_rstW,
+	input [4:0] i_PauseUnit_ra1,
+    input [4:0] i_PauseUnit_ra2,
+    input [31:0] i_PauseUnit_rd1,
+    input [31:0] i_PauseUnit_rd2,
+    input [4:0] i_PauseUnit_regWa,
+    input i_PauseUnit_regWe,
+    input i_PauseUnit_isLoad,
 
-		// a factor that lead to pause, (another is lw)
-		output wire o_PauseUnit_pause,
-		input wire [31:0] o_PauseUnit_rd1, o_PauseUnit_rd2
+    output o_PauseUnit_pause,
+    output [31:0] o_PauseUnit_rd1,
+    output [31:0] o_PauseUnit_rd2
 	);
 
-	reg [4: 0] buff1, buff2, buff3;
+reg reg_exe_isL;
 
-	always @(posedge clk or negedge rstn) begin
-		if (!rstn) begin
-			buff1 <= 0;
-			buff2 <= 0;
-			buff3 <= 0;
-		end else begin
-			// queue: in, buff3, buff2, buff1, out
-			buff3 <= i_PauseUnit_WRA;
-			buff2 <= buff3;
-			buff1 <= buff2;
-		end
+reg reg_exe_we;
+reg reg_mem_we;
+reg reg_wrt_we;
+
+reg [4:0] reg_exe_wa;
+reg [4:0] reg_mem_wa;
+reg [4:0] reg_wrt_wa;
+
+assign o_PauseUnit_pause = reg_exe_isL && reg_exe_we && (reg_exe_wa == i_PauseUnit_ra1 || reg_exe_wa == i_PauseUnit_ra2);
+
+assign o_PauseUnit_rd1 = (reg_exe_we && reg_exe_wa == i_PauseUnit_ra1) ? i_PauseUnit_aluOutE :
+							(reg_mem_we && reg_mem_wa == i_PauseUnit_ra1) ? i_PauseUnit_dMemRDataM : 
+							(reg_wrt_we && reg_wrt_wa == i_PauseUnit_ra1) ? i_PauseUnit_rstW : 
+							i_PauseUnit_rd1;
+
+assign o_PauseUnit_rd2 = (reg_exe_we && reg_exe_wa == i_PauseUnit_ra2) ? i_PauseUnit_aluOutE :
+							(reg_mem_we && reg_mem_wa == i_PauseUnit_ra2) ? i_PauseUnit_dMemRDataM : 
+							(reg_wrt_we && reg_wrt_wa == i_PauseUnit_ra2) ? i_PauseUnit_rstW : 
+							i_PauseUnit_rd2;
+
+always @(posedge clk or negedge rstn) begin
+	if (!rstn) begin
+		// reset
+		reg_exe_isL <= 0;
+		reg_exe_we <= 0;
+		reg_mem_we <= 0;
+		reg_wrt_we <= 0;
+		reg_exe_wa <= 4'b0;
+		reg_mem_wa <= 4'b0;
+		reg_wrt_wa <= 4'b0;
 	end
+	else if (o_PauseUnit_pause) begin
+		reg_exe_isL <= 0;
+		reg_exe_we <= 0;
+		reg_exe_wa <= 4'b0;
 
-	assign o_PauseUnit_rd1 = (o_PauseUnit_ra1 == buff3) ? i_PauseUnit_aluOutE : 
-							(o_PauseUnit_ra1 == buff2) ? i_PauseUnit_dMemRDataM :
-							(o_PauseUnit_ra1 == buff1) ? i_PauseUnit_W : o_PauseUnit_rd1;
-	assign o_PauseUnit_rd2 = (o_PauseUnit_ra2 == buff3) ? i_PauseUnit_aluOutE : 
-							(o_PauseUnit_ra2 == buff2) ? i_PauseUnit_dMemRDataM :
-							(o_PauseUnit_ra2 == buff1) ? i_PauseUnit_W : o_PauseUnit_rd2;
-	// matter to the nearest instruction only
-	assign o_PauseUnit_pause = (o_PauseUnit_ra1 == buff1) || (o_PauseUnit_ra2 == buff1);
+		reg_mem_we <= reg_exe_we;
+		reg_mem_wa <= reg_exe_wa;
+
+		reg_wrt_we <= reg_mem_we;
+		reg_wrt_wa <= reg_mem_wa;
+	end
+	else begin
+		reg_exe_isL <= i_PauseUnit_isLoad;
+		reg_exe_we <= i_PauseUnit_regWe;
+		reg_exe_wa <= i_PauseUnit_regWa;
+
+		reg_mem_we <= reg_exe_we;
+		reg_mem_wa <= reg_exe_wa;
+
+		reg_wrt_we <= reg_mem_we;
+		reg_wrt_wa <= reg_mem_wa;
+	end
+end
 
 endmodule

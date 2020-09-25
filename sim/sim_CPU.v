@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 
-module MultiCPU(
-		input wire clk, rstn
-	);
+module sim_CPU();
+    
+    reg clk, rstn;
     
     wire pauseD, clrE;
 	wire [31:0] PCF, instF;
@@ -112,4 +112,21 @@ module MultiCPU(
 		.o_WRT_WRA				(WRAW),
 		.o_WRT_rstW				(rstW));
 		
+	initial begin
+	   clk = 0;
+	   rstn = 0;
+    end
+    
+    always begin
+        #20
+        clk = ~clk;
+    end
+    
+    always begin
+        #25
+        rstn = ~rstn;
+        #2000000000
+        rstn = ~rstn;
+    end
+
 endmodule

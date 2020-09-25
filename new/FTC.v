@@ -1,13 +1,21 @@
 `timescale 1ns / 1ps
 
 module FTC(
-		input wire clk, rstn,
-		input wire [31:0] i_FTC_pc,
-		output wire [31:0] o_FTC_inst, o_FTC_pc
-    );
+		input wire clk, rstn, i_FTC_pause, i_FTC_we,
+		input wire [31:0] i_FTC_PC,
+		output wire [31:0] o_FTC_inst, o_FTC_PC
+	);
 	
-	// separate at ProgramCounter
-	wire [31:0] FTC_pc;
-    ProgramCounter program_counter(clk, rstn, i_FTC_pc, o_FTC_pc);
-    InstructionMemory instruction_memory(FTC_pc, o_FTC_inst);
+	wire [31:0] ProgramCounter_PC;
+	ProgramCounter program_counter(
+		.clk						(clk),
+		.rstn						(rstn),
+		.i_ProgramCounter_pause		(i_FTC_pause),
+		.i_ProgramCounter_we		(i_FTC_we),
+		.i_ProgramCounter_PC		(i_FTC_PC),
+		.o_ProgramCounter_PC		(ProgramCounter_PC),
+		.o_ProgramCounter_PC_PLUS	(o_FTC_PC));
+	InstructionMemory instruction_memory(
+		.i_InstructionMemory_PC		(ProgramCounter_PC),
+		.o_InstructionMemory_inst	(o_FTC_inst));
 endmodule

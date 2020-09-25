@@ -6,6 +6,6 @@ module mux #(parameter WIDTH = 8)(
 	output wire [WIDTH - 1 : 0] out
 	);
 
-	assign out = (select == 1) ? in0 : in1;
+	assign out = (select == 1) ? in1 : in0;
 
 endmodule
