@@ -2,13 +2,14 @@
 
 module T_Test();
     reg clk, rstn;
-    wire terminal, correct;
+    wire terminal;
+    wire [7:0] answer;
     
     Test test(
     .clk        (clk),
     .rstn       (rstn),
-    .terminal  (terminal),
-    .correct    (correct));
+    .terminal   (terminal),
+    .answer     (answer));
     
     initial begin
 	   clk = 0;

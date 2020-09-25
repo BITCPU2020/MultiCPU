@@ -2,11 +2,12 @@
 
 module Test(
     input clk, rstn,
-    output terminal, correct
+    output terminal,
+    output[7:0] answer
     );
-    reg is_terminal, is_correct;
+    reg is_terminal;
     assign terminal=is_terminal;
-    assign correct=is_correct;
+    assign answer= U_cpu.mem.data_memory.dmem[0][7:0];
     wire s_clk;
     assign s_clk = (terminal == 0) ? clk : 0;
 
@@ -18,13 +19,9 @@ module Test(
     always @(posedge clk or negedge rstn) begin
     	if (!rstn) begin
     		is_terminal <= 0;
-    		is_correct <= 0;
     	end
-    	else if (U_cpu.ftc.program_counter.o_ProgramCounter_PC == 32'h0000_0050) begin
+    	else if (U_cpu.ftc.program_counter.o_ProgramCounter_PC == 32'h0000_0054) begin
     		is_terminal <= 1;
-    		if (U_cpu.mem.data_memory.dmem[0] == 32'h0000_0037) begin
-    		  is_correct <= 1;
-    	   end
     	end
     	
     end

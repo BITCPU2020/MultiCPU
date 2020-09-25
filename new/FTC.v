@@ -16,6 +16,8 @@ module FTC(
 		.o_ProgramCounter_PC		(ProgramCounter_PC),
 		.o_ProgramCounter_PC_PLUS	(o_FTC_PC));
 	InstructionMemory instruction_memory(
+		.clk						(clk),
+		.rstn						(rstn),
 		.i_InstructionMemory_PC		(ProgramCounter_PC),
 		.o_InstructionMemory_inst	(o_FTC_inst));
 endmodule
