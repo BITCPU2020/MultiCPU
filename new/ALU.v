@@ -6,19 +6,19 @@ module ALU(
 		output wire [31:0] o_ALU_aluOut
 	);
 
-	parameter OP_ADD = 5'd0;
-	parameter OP_SUB = 5'd1;
-	parameter OP_AND = 5'd2;
-	parameter OP_OR = 5'd3;
-	parameter OP_XOR = 5'd4;
-	parameter OP_NOR = 5'd5;
-	parameter OP_CMPU = 5'd7;
-	parameter OP_CMP = 5'd6;
-	parameter OP_SL = 5'd8;
-	parameter OP_SR = 5'd9;
-	parameter OP_SRA = 5'd10;
-	parameter OP_LUI = 5'd11;
-	parameter OP_XAL = 5'd12;
+	parameter OP_ADD = 5'd1;
+	parameter OP_SUB = 5'd2;
+	parameter OP_AND = 5'd3;
+	parameter OP_OR = 5'd4;
+	parameter OP_XOR = 5'd5;
+	parameter OP_NOR = 5'd6;
+	parameter OP_CMP = 5'd7;
+	parameter OP_CMPU = 5'd8;
+	parameter OP_SL = 5'd9;
+	parameter OP_SR = 5'd10;
+	parameter OP_SRA = 5'd11;
+	parameter OP_LUI = 5'd12;
+	parameter OP_XAL = 5'd13;
 
 
 	wire [32:0] ext_A = {i_ALU_srcA[31], i_ALU_srcA};	// sign_extend_A
